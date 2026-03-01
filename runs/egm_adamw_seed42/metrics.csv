@@ -1,0 +1,2 @@
+step,train_ce,train_aux,train_total,train_retrieval_acc,eval_ce,eval_aux,eval_retrieval_acc,eval_gate_mean,eval_confidence_mean
+1,251.8635711669922,0.23784735798835754,251.88735961914062,0.0,247.7672576904297,0.23881444334983826,0.0,0.5051608085632324,0.03554181754589081

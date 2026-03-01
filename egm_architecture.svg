@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820">
+  <defs>
+    <style>
+      .title { font: 700 34px Arial, sans-serif; fill: #0f172a; }
+      .subtitle { font: 500 20px Arial, sans-serif; fill: #334155; }
+      .panelTitle { font: 700 24px Arial, sans-serif; fill: #0f172a; }
+      .boxText { font: 600 18px Arial, sans-serif; fill: #0f172a; }
+      .small { font: 500 16px Arial, sans-serif; fill: #334155; }
+      .caption { font: 600 17px Arial, sans-serif; fill: #111827; }
+      .eq { font: 600 18px 'Courier New', monospace; fill: #111827; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <polygon points="0,0 10,4 0,8" fill="#334155" />
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="820" fill="#f8fafc"/>
+  <text x="700" y="58" text-anchor="middle" class="title">Entropy-Gated Residual Mixing (EGM)</text>
+  <text x="700" y="90" text-anchor="middle" class="subtitle">Mistral-style architectural modification for token-wise residual routing</text>
+
+  <!-- Left panel: baseline -->
+  <rect x="70" y="130" width="590" height="580" rx="20" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="365" y="172" text-anchor="middle" class="panelTitle">Baseline Block</text>
+
+  <rect x="210" y="210" width="310" height="62" rx="12" fill="#e2e8f0" stroke="#94a3b8"/>
+  <text x="365" y="248" text-anchor="middle" class="boxText">RMSNorm(x)</text>
+
+  <rect x="210" y="318" width="310" height="62" rx="12" fill="#dbeafe" stroke="#60a5fa"/>
+  <text x="365" y="356" text-anchor="middle" class="boxText">Causal Attention</text>
+
+  <rect x="210" y="428" width="310" height="62" rx="12" fill="#dcfce7" stroke="#4ade80"/>
+  <text x="365" y="466" text-anchor="middle" class="boxText">SwiGLU MLP</text>
+
+  <rect x="180" y="540" width="370" height="120" rx="12" fill="#f1f5f9" stroke="#94a3b8"/>
+  <text x="365" y="582" text-anchor="middle" class="caption">Fixed residual path</text>
+  <text x="365" y="616" text-anchor="middle" class="eq">x &lt;- x + attn + mlp</text>
+
+  <line x1="365" y1="272" x2="365" y2="318" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="365" y1="380" x2="365" y2="428" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="365" y1="490" x2="365" y2="540" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Right panel: EGM -->
+  <rect x="740" y="130" width="590" height="580" rx="20" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="1035" y="172" text-anchor="middle" class="panelTitle">EGM Block (Proposed)</text>
+
+  <rect x="880" y="210" width="310" height="62" rx="12" fill="#e2e8f0" stroke="#94a3b8"/>
+  <text x="1035" y="248" text-anchor="middle" class="boxText">RMSNorm(x)</text>
+
+  <rect x="785" y="322" width="220" height="62" rx="12" fill="#dbeafe" stroke="#60a5fa"/>
+  <text x="895" y="360" text-anchor="middle" class="boxText">Attention</text>
+
+  <rect x="1065" y="322" width="220" height="62" rx="12" fill="#dcfce7" stroke="#4ade80"/>
+  <text x="1175" y="360" text-anchor="middle" class="boxText">SwiGLU</text>
+
+  <rect x="888" y="432" width="294" height="84" rx="12" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="1035" y="465" text-anchor="middle" class="boxText">Gate MLP</text>
+  <text x="1035" y="492" text-anchor="middle" class="small">input: h + confidence</text>
+
+  <rect x="815" y="552" width="440" height="120" rx="12" fill="#f1f5f9" stroke="#94a3b8"/>
+  <text x="1035" y="592" text-anchor="middle" class="caption">Routed residual update</text>
+  <text x="1035" y="625" text-anchor="middle" class="eq">x &lt;- x + s * (g * attn + (1-g) * mlp)</text>
+  <text x="1035" y="652" text-anchor="middle" class="small">g is aligned with attention confidence via L_aux</text>
+
+  <line x1="1035" y1="272" x2="895" y2="322" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="1035" y1="272" x2="1175" y2="322" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="895" y1="384" x2="955" y2="432" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="1175" y1="384" x2="1115" y2="432" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="1035" y1="516" x2="1035" y2="552" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <text x="700" y="764" text-anchor="middle" class="subtitle">
+    Hypothesis: confidence-aware routing improves long-context retrieval while preserving compositional modeling.
+  </text>
+</svg>

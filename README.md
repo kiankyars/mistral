@@ -1,6 +1,6 @@
 # Entropy-Gated Residual Mixing for Mistral-Style Decoders
 
-I target **Tilde Research - Best Architectural Modification** with a concrete structural change:
+![EGM architecture diagram](egm_architecture.svg)
 
 - Baseline Mistral-style block: pre-norm -> attention residual -> MLP residual
 - Proposed block (**EGM**): pre-norm -> attention + MLP in parallel -> token-wise gated residual mix
@@ -9,23 +9,6 @@ The gate is conditioned on **attention confidence** (1 - normalized attention en
 
 - high-confidence retrieval tokens -> favor attention update
 - low-confidence tokens -> favor MLP/world-modeling update
-
-## Why this is a strong challenge submission
-
-- **Principled mechanism**: residual routing is tied to information-theoretic confidence
-- **Real architecture change**: not prompt engineering, not only hyperparameters
-- **Training dynamic change**: auxiliary gate-confidence alignment loss + optional Muon-like optimizer
-- **Ablation-ready**: baseline vs EGM runs out of the box
-
-## Benchmark
-
-To demonstrate the behavioral change fast, I use a synthetic long-context retrieval task:
-
-- sequence contains many key-value pairs
-- final query asks for value of one earlier key
-- metric = final-token retrieval accuracy
-
-This isolates memory/retrieval behavior without data wrangling noise.
 
 ## Quickstart (uv)
 
@@ -57,19 +40,6 @@ Outputs are saved under `runs/<run_name>/`:
 - `best.pt`
 - `config.json`
 
-## Cloud ablation (computer can be off)
-
-I can run ablations in GitHub Actions, so training continues after shutdown.
-
-### One-time setup
-
-```bash
-git init
-git add .
-git commit -m "Initial EGM ablation project"
-gh repo create <owner>/<repo> --private --source=. --remote=origin --push
-```
-
 ### Trigger cloud ablation
 
 ```bash
@@ -88,15 +58,6 @@ gh run list --workflow ablation.yml --limit 5
 gh run watch
 gh run download --name ablation-runs
 ```
-
-## My hackathon demo script
-
-1. Explain baseline block vs EGM block in one slide.
-2. Run `tilde-ablate` with fixed seed.
-3. Show retrieval accuracy gap and gate statistics from `metrics.csv`.
-4. Explain observed behavior:
-   - gate mean tracks confidence,
-   - model routes retrieval-heavy positions toward attention.
 
 ## Repo structure
 
