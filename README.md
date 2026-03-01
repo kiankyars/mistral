@@ -1,6 +1,6 @@
 # Entropy-Gated Residual Mixing for Mistral-Style Decoders
 
-![EGM architecture diagram](egm_architecture.svg)
+![EGM architecture diagram](/docs/egm_architecture.svg)
 
 - Baseline Mistral-style block: pre-norm -> attention residual -> MLP residual
 - Proposed block (**EGM**): pre-norm -> attention + MLP in parallel -> token-wise gated residual mix
