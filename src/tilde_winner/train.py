@@ -3,6 +3,7 @@ import csv
 import json
 import random
 import time
+from dataclasses import asdict
 from pathlib import Path
 
 import numpy as np
@@ -206,7 +207,7 @@ def run(args: argparse.Namespace) -> Path:
                 best_eval_acc = eval_metrics["eval_retrieval_acc"]
                 torch.save(
                     {
-                        "model_cfg": model_cfg.__dict__,
+                        "model_cfg": asdict(model_cfg),
                         "model_state_dict": model.state_dict(),
                         "step": step,
                         "best_eval_retrieval_acc": best_eval_acc,

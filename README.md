@@ -1,6 +1,6 @@
 # Entropy-Gated Residual Mixing for Mistral-Style Decoders
 
-This project targets **Tilde Research - Best Architectural Modification** with a concrete structural change:
+I target **Tilde Research - Best Architectural Modification** with a concrete structural change:
 
 - Baseline Mistral-style block: pre-norm -> attention residual -> MLP residual
 - Proposed block (**EGM**): pre-norm -> attention + MLP in parallel -> token-wise gated residual mix
@@ -19,7 +19,7 @@ The gate is conditioned on **attention confidence** (1 - normalized attention en
 
 ## Benchmark
 
-To demonstrate the behavioral change fast, we use a synthetic long-context retrieval task:
+To demonstrate the behavioral change fast, I use a synthetic long-context retrieval task:
 
 - sequence contains many key-value pairs
 - final query asks for value of one earlier key
@@ -57,7 +57,39 @@ Outputs are saved under `runs/<run_name>/`:
 - `best.pt`
 - `config.json`
 
-## Suggested hackathon demo script
+## Cloud ablation (computer can be off)
+
+I can run ablations in GitHub Actions, so training continues after shutdown.
+
+### One-time setup
+
+```bash
+git init
+git add .
+git commit -m "Initial EGM ablation project"
+gh repo create <owner>/<repo> --private --source=. --remote=origin --push
+```
+
+### Trigger cloud ablation
+
+```bash
+gh workflow run ablation.yml \
+  -f steps=3000 \
+  -f batch_size=64 \
+  -f eval_batches=50 \
+  -f eval_interval=200 \
+  -f optimizer=muon
+```
+
+### Monitor + download results
+
+```bash
+gh run list --workflow ablation.yml --limit 5
+gh run watch
+gh run download --name ablation-runs
+```
+
+## My hackathon demo script
 
 1. Explain baseline block vs EGM block in one slide.
 2. Run `tilde-ablate` with fixed seed.
